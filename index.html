@@ -8,11 +8,40 @@
     <style>
         body {
             padding: 20px;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: #333;
+        }
+        h1 {
+            color: #22125e;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .btn-primary {
+            background-color: #4CAF50; 
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #45a049;            
+        }
+        .btn-secondary {
+            background-color: #008CBA; 
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #007B9E; 
+        }
+        .form-control {
+            border: 2px solid #4CAF50; 
+        }
+        .form-control:focus {
+            border-color: #45a049; 
+            box-shadow: 0 0 5px rgba(72, 239, 128, 0.5);
         }
     </style>
 </head>
 <body>
-    <h1>Message Encryption and Decryption</h1>
+    
+
+    <h1>project</h1>
     <form id="message-form">
         <div class="mb-3">
             <label for="message" class="form-label">Message:</label>
@@ -23,9 +52,9 @@
             <input type="number" class="form-control" id="shift" value="3">
         </div>
         <button type="submit" class="btn btn-primary" id="encrypt-btn">Encrypt</button>
-        <button type="submit" class="btn btn-secondary" id="decrypt-btn">Decrypt</button>
+        <button type="button" class="btn btn-secondary" id="decrypt-btn">Decrypt</button>
     </form>
-    <div class="modal fade" id="result-modal" tabindex="-1" aria-labelledby="result-modal-label" aria-hidden="true">
+    <div class="modal fade" id="result-modal" tabindex="-1" aria-labelledby="result-modal-label" aria-hidden="true" aria-describedby="result-modal-description">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -55,9 +84,17 @@
             let result;
 
             if (e.submitter === encryptBtn) {
+                if (!message) {
+                    alert("Please enter a message to encrypt.");
+                    return;
+                }
                 result = caesarCipher(message, shift);
                 resultModalBody.textContent = `Encrypted message: ${result}`;
             } else if (e.submitter === decryptBtn) {
+                if (!message) {
+                    alert("Please enter a message to decrypt.");
+                    return;
+                }
                 result = caesarCipher(message, -shift);
                 resultModalBody.textContent = `Decrypted message: ${result}`;
             }
@@ -83,5 +120,6 @@
             return result;
         }
     </script>
+    
 </body>
 </html>
