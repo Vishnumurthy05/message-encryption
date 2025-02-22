@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Encryption and Decryption</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <style>
+        body {
+            padding: 20px;
+            background-image: url('4062577.jpg');
+            background-size: cover;
+            background-position: center; 
+
+            color: #333;
+        }
+        h1 {
+            color: #22125e;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .btn-primary {
+            background-color: #4CAF50; 
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #45a049;            
+        }
+        .btn-secondary {
+            background-color: #008CBA; 
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #007B9E; 
+        }
+        .form-control {
+            border: 2px solid #4CAF50; 
+        }
+        .form-control:focus {
+            border-color: #45a049; 
+            box-shadow: 0 0 5px rgba(72, 239, 128, 0.5);
+        }
+    </style>
+</head>
+<body>
+    
+
+    <h1>project</h1>
+    <form id="message-form">
+        <div class="mb-3">
+            <label for="message" class="form-label">Message:</label>
+            <textarea class="form-control" id="message" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="shift" class="form-label">Shift:</label>
+            <input type="number" class="form-control" id="shift" value="3">
+        </div>
+        <button type="submit" class="btn btn-primary" id="encrypt-btn">Encrypt</button>
+        <button type="button" class="btn btn-secondary" id="decrypt-btn">Decrypt</button>
+    </form>
+    <div class="modal fade" id="result-modal" tabindex="-1" aria-labelledby="result-modal-label" aria-hidden="true" aria-describedby="result-modal-description">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="result-modal-label">Result</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="result-modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script>
+        const form = document.getElementById('message-form');
+        const messageInput = document.getElementById('message');
+        const shiftInput = document.getElementById('shift');
+        const encryptBtn = document.getElementById('encrypt-btn');
+        const decryptBtn = document.getElementById('decrypt-btn');
+        const resultModal = new bootstrap.Modal(document.getElementById('result-modal'));
+        const resultModalBody = document.getElementById('result-modal-body');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const message = messageInput.value;
+            const shift = parseInt(shiftInput.value);
+            let result;
+
+            if (e.submitter === encryptBtn) {
+                if (!message) {
+                    alert("Please enter a message to encrypt.");
+                    return;
+                }
+                result = caesarCipher(message, shift);
+                resultModalBody.textContent = `Encrypted message: ${result}`;
+            } else if (e.submitter === decryptBtn) {
+                if (!message) {
+                    alert("Please enter a message to decrypt.");
+                    return;
+                }
+                result = caesarCipher(message, -shift);
+                resultModalBody.textContent = `Decrypted message: ${result}`;
+            }
+
+            resultModal.show();
+        });
+
+        function caesarCipher(message, shift) {
+            let result = '';
+
+            for (let i = 0; i < message.length; i++) {
+                const charCode = message.charCodeAt(i);
+
+                if (charCode >= 65 && charCode <= 90) {
+                    result += String.fromCharCode((charCode - 65 + shift) % 26 + 65);
+                } else if (charCode >= 97 && charCode <= 122) {
+                    result += String.fromCharCode((charCode - 97 + shift) % 26 + 97);
+                } else {
+                    result += message[i];
+                }
+            }
+
+            return result;
+        }
+    </script>
+    
+</body>
+</html>
